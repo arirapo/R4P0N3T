@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raponet</title>
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --text: #e8e2d8;
+      --muted: #8f8a82;
+      --line: #2a2a2a;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    main {
+      width: min(88vw, 520px);
+    }
+
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin: 0 0 2.5rem 0;
+    }
+
+    p {
+      margin: 0 0 1.4rem 0;
+      color: var(--muted);
+    }
+
+    .quiet {
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    a {
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    a:hover {
+      border-bottom-color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Raponet</h1>
+
+    <p>
+      Raponet is a small independent practice by Ari Rapo.
+    </p>
+
+    <p>
+      It exists somewhere between photography, writing, web publishing,
+      education and quiet technical experiments.
+    </p>
+
+    <p>
+      The work is occasional, project-based and intentionally modest.
+    </p>
+
+    <div class="quiet">
+      <p>
+        Ari Rapo<br>
+        Y-tunnus 1520001-3<br>
+        Finland
+      </p>
+
+      <p>
+        <a href="mailto:ari.rapo@photodiary.guru">ari.rapo@photodiary.guru</a>
+      </p>
+    </div>
+  </main>
+</body>
+</html>
