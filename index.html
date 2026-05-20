@@ -7,7 +7,7 @@
 
   <style>
     :root {
-      --bg: #0f0f0f;
+      --bg: #0b0b0b;
       --text: #e8e2d8;
       --muted: #8f8a82;
       --line: #2a2a2a;
@@ -16,26 +16,52 @@
     html, body {
       margin: 0;
       padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
       background: var(--bg);
       color: var(--text);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
-      overflow: hidden;
     }
 
     body {
-      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
     }
 
+    /* GENERATIVE BACKGROUND */
+
+    #bgCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.22;
+    }
+
+    /* DARK OVERLAY */
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(255,255,255,0.02),
+          rgba(0,0,0,0.84)
+        );
+      z-index: 1;
+    }
+
+    /* CONTENT */
+
     main {
       width: min(88vw, 520px);
       position: relative;
-      z-index: 2;
+      z-index: 5;
     }
 
     h1 {
@@ -48,6 +74,7 @@
     p {
       margin: 0 0 1.4rem 0;
       color: var(--muted);
+      line-height: 1.7;
     }
 
     .quiet {
@@ -55,39 +82,42 @@
       padding-top: 1.4rem;
       border-top: 1px solid var(--line);
       font-size: 0.92rem;
-      color: var(--muted);
     }
 
     a {
       color: var(--text);
       text-decoration: none;
       border-bottom: 1px solid var(--line);
-      transition: border-color 0.3s ease;
+      transition: border-color 0.4s ease;
     }
 
     a:hover {
       border-bottom-color: var(--text);
     }
 
+    /* TRACE TEXT */
+
     .trace {
       margin-top: 3.5rem;
-      font-size: 0.85rem;
+      min-height: 1.4em;
       color: var(--muted);
       opacity: 0.45;
-      min-height: 1.4em;
+      font-size: 0.84rem;
       letter-spacing: 0.03em;
       transition: opacity 1.5s ease;
     }
 
+    /* FLOATING TEXTS */
+
     .floating {
       position: absolute;
-      color: rgba(255,255,255,0.035);
+      color: rgba(255,255,255,0.03);
       font-size: 0.8rem;
       pointer-events: none;
       user-select: none;
-      animation: drift linear infinite;
       white-space: nowrap;
-      z-index: 1;
+      animation: drift linear infinite;
+      z-index: 2;
     }
 
     @keyframes drift {
@@ -103,7 +133,16 @@
 
 <body>
 
+  <!-- GENERATIVE BACKGROUND -->
+
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="overlay"></div>
+
+  <!-- CONTENT -->
+
   <main>
+
     <h1>Raponet</h1>
 
     <p>
@@ -116,10 +155,12 @@
     </p>
 
     <p>
-      The work is occasional, project-based and intentionally modest.
+      The work is occasional, project-based
+      and intentionally modest.
     </p>
 
     <div class="quiet">
+
       <p>
         Y-tunnus 1520001-3<br>
         Finland
@@ -130,95 +171,248 @@
           ari.rapo@photodiary.guru
         </a>
       </p>
+
     </div>
 
     <div class="trace" id="trace"></div>
+
   </main>
 
   <script>
+
+    /* GENERATIVE BACKGROUND */
+
+    const canvas =
+      document.getElementById("bgCanvas");
+
+    const ctx =
+      canvas.getContext("2d");
+
+    let w, h;
+
+    function resize() {
+
+      w = canvas.width =
+        window.innerWidth;
+
+      h = canvas.height =
+        window.innerHeight;
+    }
+
+    resize();
+
+    window.addEventListener(
+      "resize",
+      resize
+    );
+
+    const blobs = [];
+
+    for (let i = 0; i < 8; i++) {
+
+      blobs.push({
+
+        x: Math.random() * w,
+        y: Math.random() * h,
+
+        r: 120 + Math.random() * 320,
+
+        dx:
+          (Math.random() - 0.5) * 0.15,
+
+        dy:
+          (Math.random() - 0.5) * 0.15,
+
+        hue:
+          180 + Math.random() * 120
+      });
+    }
+
+    function drawBackground() {
+
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.fillStyle = "#050505";
+      ctx.fillRect(0, 0, w, h);
+
+      for (const b of blobs) {
+
+        const gradient =
+          ctx.createRadialGradient(
+            b.x, b.y, 0,
+            b.x, b.y, b.r
+          );
+
+        gradient.addColorStop(
+          0,
+          `hsla(${b.hue}, 60%, 55%, 0.06)`
+        );
+
+        gradient.addColorStop(
+          1,
+          `hsla(${b.hue}, 60%, 55%, 0)`
+        );
+
+        ctx.fillStyle = gradient;
+
+        ctx.beginPath();
+
+        ctx.arc(
+          b.x,
+          b.y,
+          b.r,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fill();
+
+        b.x += b.dx;
+        b.y += b.dy;
+
+        if (b.x < -200) b.x = w + 200;
+        if (b.x > w + 200) b.x = -200;
+
+        if (b.y < -200) b.y = h + 200;
+        if (b.y > h + 200) b.y = -200;
+      }
+
+      /* subtle noise */
+
+      for (let i = 0; i < 120; i++) {
+
+        ctx.fillStyle =
+          `rgba(255,255,255,${Math.random() * 0.015})`;
+
+        ctx.fillRect(
+          Math.random() * w,
+          Math.random() * h,
+          1,
+          1
+        );
+      }
+
+      requestAnimationFrame(
+        drawBackground
+      );
+    }
+
+    drawBackground();
+
+    /* TRACE TEXT */
+
     const traces = [
+
       "photography",
       "memory",
       "quiet web publishing",
       "education",
       "small experiments",
-      "writing",
       "technical traces",
-      "between images and systems",
       "possible traces",
-      "occasional projects",
-      "something remains",
-      "slow observation",
       "networked fragments",
-      "lightweight structures",
-      "minimal systems"
+      "minimal systems",
+      "slow observation",
+      "latent structures"
+
     ];
 
-    const floatingTexts = [
-      "000111",
-      "trace",
-      "memory",
-      "signal",
-      "drift",
-      "archive",
-      "observation",
-      "fragment",
-      "latent",
-      "network",
-      "echo",
-      "quiet system",
-      "possible trace",
-      "photodiary"
-    ];
-
-    const traceEl = document.getElementById("trace");
+    const traceEl =
+      document.getElementById("trace");
 
     function updateTrace() {
+
       traceEl.style.opacity = 0;
 
       setTimeout(() => {
-        const text =
-          traces[Math.floor(Math.random() * traces.length)];
 
-        traceEl.textContent = text;
+        traceEl.textContent =
+          traces[
+            Math.floor(
+              Math.random() * traces.length
+            )
+          ];
+
         traceEl.style.opacity = 0.45;
+
       }, 800);
     }
 
     updateTrace();
-    setInterval(updateTrace, 6000);
+
+    setInterval(
+      updateTrace,
+      6000
+    );
+
+    /* FLOATING TEXTS */
+
+    const floatingTexts = [
+
+      "000111",
+      "trace",
+      "signal",
+      "memory",
+      "fragment",
+      "drift",
+      "archive",
+      "possible trace",
+      "photodiary",
+      "network"
+
+    ];
 
     function createFloatingText() {
-      const el = document.createElement("div");
+
+      const el =
+        document.createElement("div");
+
       el.className = "floating";
 
       el.textContent =
         floatingTexts[
-          Math.floor(Math.random() * floatingTexts.length)
+          Math.floor(
+            Math.random() *
+            floatingTexts.length
+          )
         ];
 
-      el.style.top = Math.random() * 100 + "vh";
+      el.style.top =
+        Math.random() * 100 + "vh";
+
       el.style.fontSize =
-        (0.65 + Math.random() * 0.5) + "rem";
+        (0.65 + Math.random() * 0.5)
+        + "rem";
 
       el.style.animationDuration =
-        (30 + Math.random() * 40) + "s";
+        (30 + Math.random() * 40)
+        + "s";
 
       el.style.opacity =
-        (0.02 + Math.random() * 0.05);
+        (0.015 + Math.random() * 0.05);
 
       document.body.appendChild(el);
 
       setTimeout(() => {
+
         el.remove();
+
       }, 80000);
     }
 
     for (let i = 0; i < 7; i++) {
-      setTimeout(createFloatingText, i * 3000);
+
+      setTimeout(
+        createFloatingText,
+        i * 2500
+      );
     }
 
-    setInterval(createFloatingText, 7000);
+    setInterval(
+      createFloatingText,
+      7000
+    );
+
   </script>
 
 </body>
