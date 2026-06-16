@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Raponet Office – Laskutus</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main class="app">
+
+<header class="app-header no-print">
+  <div>
+    <h1>Raponet Office</h1>
+    <p>Laskutus v1.0 / 0ff1c3</p>
+  </div>
+
+  <button id="printBtn" class="primary">
+    Tulosta / tallenna PDF
+  </button>
+</header>
+
+<section class="toolbar no-print">
+  <button id="reserveNumberBtn">
+    Varaa seuraava laskunumero
+  </button>
+
+  <button id="addRowBtn">
+    Lisää tuoterivi
+  </button>
+
+  <button id="clearBtn">
+    Tyhjennä lomake
+  </button>
+
+  <button id="resetCounterBtn" class="danger">
+    Korjaa laskurinumero
+  </button>
+</section>
+
+
+<section class="invoice" id="invoice">
+
+<header class="invoice-top">
+
+<div>
+<h2>LASKU</h2>
+<p class="muted">
+Raponet PHOTODIARY
+</p>
+</div>
+
+
+<div class="invoice-meta">
+
+<label>
+Laskunumero
+<input id="invoiceNumber"
+readonly
+placeholder="Varaa numero">
+</label>
+
+
+<label>
+Viitenumero
+<input id="referenceNumber" readonly>
+</label>
+
+
+<label>
+Päiväys
+<input id="invoiceDate" type="date">
+</label>
+
+
+<label>
+Eräpäivä
+<input id="dueDate" type="date">
+</label>
+
+</div>
+</header>
+
+
+<section class="parties">
+
+<div class="seller">
+
+<h3>Myyjä</h3>
+
+<p>
+<strong>
+Raponet PHOTODIARY
+</strong>
+</p>
+
+<p>
+Y-tunnus: 1520001-3
+</p>
+
+<p>
+Pääskyntie 6<br>
+16300 Orimattila<br>
+Finland
+</p>
+
+<p>
+044-033 0333<br>
+ari.rapo@photodiary.guru
+</p>
+
+</div>
+
+
+<div class="buyer">
+
+<h3>Asiakas</h3>
+
+<label>
+Nimi / yritys
+<input id="customerName">
+</label>
+
+<label>
+Y-tunnus
+<input id="customerBusinessId">
+</label>
+
+<label>
+Osoite
+<textarea id="customerAddress"
+rows="4"></textarea>
+</label>
+
+<label>
+Sähköposti
+<input id="customerEmail"
+type="email">
+</label>
+
+</div>
+
+</section>
+
+  <section class="items">
+
+<h3>
+Laskutettavat tuotteet / palvelut
+</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Tuote</th>
+<th>Kuvaus</th>
+<th>Määrä</th>
+<th>Yksikköhinta €</th>
+<th>ALV %</th>
+<th>Veroton €</th>
+<th class="no-print"></th>
+</tr>
+</thead>
+
+<tbody id="itemsBody">
+</tbody>
+
+</table>
+
+</section>
+
+
+<section class="summary">
+
+
+<div class="payment">
+
+<h3>
+Maksutiedot
+</h3>
+
+<p>
+<strong>Saaja:</strong>
+Raponet PHOTODIARY
+</p>
+
+<p>
+<strong>IBAN:</strong>
+FI74 5308 0720 1170 41
+</p>
+
+<p>
+<strong>BIC:</strong>
+OKOYFIHH
+</p>
+
+<p>
+<strong>Viitenumero:</strong>
+<span id="referenceText"></span>
+</p>
+
+<p>
+<strong>Eräpäivä:</strong>
+<span id="dueDateText"></span>
+</p>
+
+</div>
+
+
+<div class="totals">
+
+<p>
+<span>
+Veroton yhteensä
+</span>
+
+<strong id="netTotal">
+0,00 €
+</strong>
+</p>
+
+
+<p>
+
+<span>
+ALV yhteensä
+</span>
+
+<strong id="vatTotal">
+0,00 €
+</strong>
+
+</p>
+
+
+<p class="grand">
+
+<span>
+Maksettava yhteensä
+</span>
+
+<strong id="grossTotal">
+0,00 €
+</strong>
+
+</p>
+
+
+</div>
+
+</section>
+
+
+<section class="notes">
+
+<label>
+Lisätiedot
+
+<textarea 
+id="notes"
+rows="3"
+placeholder="Esim. toimitettu palvelu, projekti tai muu laskun lisätieto.">
+</textarea>
+
+</label>
+
+</section>
+
+
+<footer>
+
+<p>
+Raponet Office · laskutus v1.0 · 0ff1c3
+</p>
+
+</footer>
+
+
+</section>
+
+  <template id="rowTemplate">
+
+<tr>
+
+<td>
+
+<select class="productSelect">
+<option value="">
+Valitse
+</option>
+</select>
+
+</td>
+
+
+<td>
+
+<textarea 
+class="description"
+rows="2">
+</textarea>
+
+</td>
+
+
+<td>
+
+<input
+class="quantity"
+type="number"
+step="0.01"
+min="0"
+value="1">
+
+</td>
+
+
+<td>
+
+<input
+class="unitPrice"
+type="number"
+step="0.01"
+min="0"
+value="0">
+
+</td>
+
+
+<td>
+
+<input
+class="vatRate"
+type="number"
+step="0.1"
+min="0"
+value="25.5">
+
+</td>
+
+
+<td class="lineNet">
+
+0,00 €
+
+</td>
+
+
+<td class="no-print">
+
+<button class="removeRowBtn">
+Poista
+</button>
+
+</td>
+
+
+</tr>
+
+</template>
+
+
+<script src="app.js"></script>
+
+</main>
+
+</body>
+
+</html>
