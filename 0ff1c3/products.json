@@ -1,0 +1,33 @@
+[
+  {
+    "code": "VALOKUVAUS",
+    "name": "Valokuvauspalvelu",
+    "description": "Valokuvauspalvelu / asiantuntijatyö",
+    "price": 80,
+    "vat": 25.5
+  },
+
+  {
+    "code": "KOULUTUS",
+    "name": "Koulutus / työpaja",
+    "description": "Koulutus-, ohjaus- tai työpajapalvelu",
+    "price": 500,
+    "vat": 25.5
+  },
+
+  {
+    "code": "AI-KONSULTOINTI",
+    "name": "Tekoälykonsultointi",
+    "description": "Tekoälyn hyödyntämiseen liittyvä asiantuntijapalvelu",
+    "price": 95,
+    "vat": 25.5
+  },
+
+  {
+    "code": "DIGITAALINEN",
+    "name": "Digitaalinen sisältö / verkkotyö",
+    "description": "Verkkosivun, digitaalisen sisällön tai mediasisällön suunnittelu ja toteutus",
+    "price": 95,
+    "vat": 25.5
+  }
+]
