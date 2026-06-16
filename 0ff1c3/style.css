@@ -1,0 +1,237 @@
+:root {
+  --bg: #f4f2ef;
+  --paper: #ffffff;
+  --ink: #1e1e1e;
+  --muted: #666;
+  --line: #d8d2c9;
+  --accent: #111;
+  --danger: #8a1f1f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.app-header,
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.toolbar {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 8px;
+}
+
+p {
+  margin: 4px 0;
+}
+
+button {
+  border: 1px solid var(--accent);
+  background: #fff;
+  color: var(--ink);
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button.primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+button.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.invoice {
+  background: var(--paper);
+  padding: 36px;
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 40px rgba(0,0,0,.08);
+}
+
+.invoice-top,
+.parties,
+.summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 28px;
+}
+
+.invoice-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  margin-top: 4px;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.seller,
+.buyer {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+.items table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.items th,
+.items td {
+  border-bottom: 1px solid var(--line);
+  padding: 8px;
+  vertical-align: top;
+  text-align: left;
+}
+
+.items th {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.items input,
+.items textarea,
+.items select {
+  margin-top: 0;
+}
+
+.lineNet {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.payment {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+.totals {
+  margin-left: auto;
+  min-width: 320px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+.totals p {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 6px 0;
+}
+
+.totals .grand {
+  border-top: 2px solid var(--ink);
+  margin-top: 8px;
+  padding-top: 12px;
+  font-size: 1.15rem;
+}
+
+.notes {
+  margin-top: 24px;
+}
+
+footer {
+  margin-top: 32px;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Tulostus PDF:ksi */
+
+@media print {
+
+  body {
+    background: #fff;
+  }
+
+  .app {
+    max-width: none;
+    padding: 0;
+  }
+
+  .invoice {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  input,
+  textarea,
+  select {
+    border: none;
+    padding: 0;
+    background: transparent;
+    appearance: none;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+}
