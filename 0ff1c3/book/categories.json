@@ -1,0 +1,62 @@
+{
+  "income": [
+    {
+      "code": "VALOKUVAUS",
+      "name": "Valokuvauspalvelu",
+      "vat": 25.5
+    },
+    {
+      "code": "KOULUTUS",
+      "name": "Koulutus / työpaja",
+      "vat": 25.5
+    },
+    {
+      "code": "AI-KONSULTOINTI",
+      "name": "Tekoälykonsultointi",
+      "vat": 25.5
+    },
+    {
+      "code": "DIGITAALINEN",
+      "name": "Digitaalinen sisältö / verkkotyö",
+      "vat": 25.5
+    }
+  ],
+
+  "expense": [
+    {
+      "code": "OHJELMISTOT",
+      "name": "Ohjelmistot ja verkkopalvelut",
+      "vat": 25.5
+    },
+    {
+      "code": "LAITTEET",
+      "name": "Laitteet ja tarvikkeet",
+      "vat": 25.5
+    },
+    {
+      "code": "TOIMISTO",
+      "name": "Toimistokulut",
+      "vat": 25.5
+    },
+    {
+      "code": "MATKAKULU",
+      "name": "Matkakulut",
+      "vat": 0
+    },
+    {
+      "code": "PUHELIN",
+      "name": "Puhelin ja tietoliikenne",
+      "vat": 25.5
+    },
+    {
+      "code": "PANKKI",
+      "name": "Pankki- ja maksukulut",
+      "vat": 0
+    },
+    {
+      "code": "MUU",
+      "name": "Muu kulu",
+      "vat": 25.5
+    }
+  ]
+}
