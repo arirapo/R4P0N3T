@@ -33,6 +33,12 @@
       "name": "Laitteet ja tarvikkeet",
       "vat": 25.5
     },
+
+    {
+  "code": "NAYTTELY",
+  "name": "Näyttelykulut",
+  "vat": 25.5
+},
     {
       "code": "TOIMISTO",
       "name": "Toimistokulut",
