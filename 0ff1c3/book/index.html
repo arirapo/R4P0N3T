@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="fi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>
+    Raponet Office – Päiväkirja
+  </title>
+
+  <link rel="stylesheet"
+        href="style.css">
+
+</head>
+
+
+<body>
+
+<main class="app">
+
+
+<header class="app-header no-print">
+
+  <div>
+
+    <h1>
+      Raponet Office
+    </h1>
+
+    <p>
+      Yhdenkertainen kirjanpitopäiväkirja
+      v1.0 / 0ff1c3/book
+    </p>
+
+  </div>
+
+
+  <button id="printBtn"
+          class="primary">
+
+    Tulosta päiväkirjaote /
+    tallenna PDF
+
+  </button>
+
+</header>
+
+
+<section class="notice no-print">
+
+<p>
+
+<strong>
+Huom:
+</strong>
+
+Tämä työkalu tekee päiväkirjaotteen,
+ALV-erittelyn ja yhteenvedot.
+
+Säilytä alkuperäiset kuitit
+ja muut tositteet erikseen.
+
+</p>
+
+</section>
+
+
+
+<section class="entry-card no-print">
+
+<h2>
+Uusi tapahtuma
+</h2>
+
+
+<div class="form-grid">
+
+
+<label>
+
+Päiväys
+
+<input id="entryDate"
+       type="date">
+
+</label>
+
+
+
+<label>
+
+Tyyppi
+
+<select id="entryType">
+
+<option value="income">
+Tulo
+</option>
+
+<option value="expense">
+Meno
+</option>
+
+</select>
+
+</label>
+
+
+
+<label>
+
+Laji
+
+<select id="entryCategory">
+</select>
+
+</label>
+
+
+
+<label>
+
+ALV %
+
+<input id="entryVat"
+       type="number"
+       step="0.1"
+       min="0"
+       value="25.5">
+
+</label>
+
+
+<label>
+
+Summa sisältää ALV:n
+
+<input id="entryGross"
+       type="number"
+       step="0.01"
+       min="0"
+       placeholder="0,00">
+
+</label>
+
+
+<label>
+
+Maksutapa / tili
+
+<select id="entryPayment">
+
+<option value="Pankkitili">
+Pankkitili
+</option>
+
+<option value="Kortti">
+Kortti
+</option>
+
+<option value="Käteinen">
+Käteinen
+</option>
+
+<option value="Muu">
+Muu
+</option>
+
+</select>
+
+</label>
+
+
+</div>
+<label>
+
+Selite
+
+<input id="entryDescription"
+       placeholder="Esim. lasku 2026-001, ohjelmistomaksu, matkakulu...">
+
+</label>
+
+
+<div class="toolbar">
+
+<button id="addEntryBtn"
+        class="primary">
+
+Lisää päiväkirjaan
+
+</button>
+
+
+<button id="clearEntriesBtn"
+        class="danger">
+
+Tyhjennä nykyinen päiväkirjaote
+
+</button>
+
+
+<button id="exportBtn">
+
+Vie JSON-varmuuskopio
+
+</button>
+
+
+<label class="import-label">
+
+Tuo JSON
+
+<input id="importInput"
+       type="file"
+       accept="application/json">
+
+</label>
+
+
+</div>
+
+
+</section>
+
+
+
+<section class="filters no-print">
+
+<h2>
+Rajaus
+</h2>
+
+
+<div class="form-grid">
+
+
+<label>
+
+Vuosi
+
+<input id="filterYear"
+       type="number"
+       min="2000"
+       placeholder="Kaikki">
+
+</label>
+
+
+<label>
+
+Kuukausi
+
+<select id="filterMonth">
+
+<option value="">
+Kaikki
+</option>
+
+<option value="01">Tammikuu</option>
+<option value="02">Helmikuu</option>
+<option value="03">Maaliskuu</option>
+<option value="04">Huhtikuu</option>
+<option value="05">Toukokuu</option>
+<option value="06">Kesäkuu</option>
+<option value="07">Heinäkuu</option>
+<option value="08">Elokuu</option>
+<option value="09">Syyskuu</option>
+<option value="10">Lokakuu</option>
+<option value="11">Marraskuu</option>
+<option value="12">Joulukuu</option>
+
+</select>
+
+</label>
+
+
+</div>
+
+</section>
+
+
+
+<section class="report" id="report">
+
+
+<header class="report-header">
+
+
+<div>
+
+<h2>
+Päiväkirjaote
+</h2>
+
+
+<p>
+
+<strong>
+Raponet PHOTODIARY
+</strong>
+
+· Y-tunnus 1520001-3
+
+</p>
+
+
+<p>
+Pääskyntie 6,
+16300 Orimattila,
+Finland
+</p>
+
+
+</div>
+
+
+<div>
+
+
+<p>
+
+<strong>
+Tulostettu:
+</strong>
+
+<span id="printedDate"></span>
+
+</p>
+
+
+<p>
+
+<strong>
+Rajaus:
+</strong>
+
+<span id="filterText">
+
+Kaikki tapahtumat
+
+</span>
+
+</p>
+
+
+</div>
+
+
+</header>
+<section class="summary">
+
+
+<div>
+
+<h3>
+Tulosyhteenveto
+</h3>
+
+
+<p>
+
+<span>
+Tulot veroton
+</span>
+
+<strong id="incomeNet">
+0,00 €
+</strong>
+
+</p>
+
+
+<p>
+
+<span>
+Menot veroton
+</span>
+
+<strong id="expenseNet">
+0,00 €
+</strong>
+
+</p>
+
+
+<p class="grand">
+
+<span>
+Tulos ennen veroja
+</span>
+
+<strong id="profitNet">
+0,00 €
+</strong>
+
+</p>
+
+
+</div>
+
+
+
+<div>
+
+
+<h3>
+ALV-yhteenveto
+</h3>
+
+
+<p>
+
+<span>
+Myynnin ALV
+</span>
+
+<strong id="salesVat">
+0,00 €
+</strong>
+
+</p>
+
+
+<p>
+
+<span>
+Ostojen ALV
+</span>
+
+<strong id="purchaseVat">
+0,00 €
+</strong>
+
+</p>
+
+
+<p class="grand">
+
+<span>
+Maksettava ALV
+</span>
+
+<strong id="vatPayable">
+0,00 €
+</strong>
+
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+<section>
+
+<h3>
+Tapahtumat
+</h3>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Päiväys
+</th>
+
+<th>
+Tyyppi
+</th>
+
+<th>
+Laji
+</th>
+
+<th>
+Selite
+</th>
+
+<th>
+ALV %
+</th>
+
+<th>
+Veroton
+</th>
+
+<th>
+ALV
+</th>
+
+<th>
+Brutto
+</th>
+
+<th class="no-print">
+</th>
+
+
+</tr>
+
+</thead>
+
+
+<tbody id="entriesBody">
+
+</tbody>
+
+
+</table>
+
+
+</section>
+
+
+
+<section class="vat-breakdown">
+
+
+<h3>
+ALV-erittely verokannoittain
+</h3>
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+ALV %
+</th>
+
+<th>
+Myynti veroton
+</th>
+
+<th>
+Myynnin ALV
+</th>
+
+<th>
+Ostot veroton
+</th>
+
+<th>
+Ostojen ALV
+</th>
+
+</tr>
+
+
+</thead>
+
+
+<tbody id="vatBreakdownBody">
+
+</tbody>
+
+
+</table>
+
+
+</section>
+
+
+
+<footer>
+
+<p>
+
+Raponet Office · Päiväkirja v1.0
+
+· Tämä ote ei sisällä tositteita.
+
+Säilytä kuitit ja muut tositteet erikseen.
+
+</p>
+
+
+</footer>
+
+
+</section>
+
+
+</main>
+
+
+<script src="app.js"></script>
+
+
+</body>
+
+</html>
