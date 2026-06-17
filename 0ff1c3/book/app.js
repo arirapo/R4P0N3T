@@ -738,7 +738,21 @@ function renderVatBreakdown(vatMap) {
 
 }
 
+function clearEntries() {
 
+  const ok = confirm(
+    "Tyhjennetäänkö nykyinen päiväkirjaote selaimen muistista? Tee ensin PDF tai JSON-varmuuskopio, jos tarvitset tämän myöhemmin."
+  );
+
+  if (!ok) return;
+
+  entries = [];
+
+  saveEntries();
+
+  render();
+
+}
 
 
 function exportJson() {
